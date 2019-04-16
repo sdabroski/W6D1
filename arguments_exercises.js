@@ -38,38 +38,71 @@ Function.prototype.myWorseBind = function(subject) {
 
 function curriedSum(numArgs) {
   let args = [];
-  
-  return function(num) {
-    args.concat(num);
+
+  return function alice(num) {
+    args.push(num);
     if (args.length === numArgs) {
       let sum = 0;
       args.forEach(ele => sum += ele);
       return sum;
     }
-    return this;
+    return alice;
   };
 }
 
+
+// function curriedSum(numArgs) {
+//   let args = [];
+
+//   const alice = function (num) {
+//     args.push(num);
+//     if (args.length === numArgs) {
+//       let sum = 0;
+//       args.forEach(ele => sum += ele);
+//       return sum;
+//     }
+//     return alice;
+//   };
+//   return alice;
+
+// }
+
+
+
+
+
 Function.prototype.curry = function(numArgs){
   let args = [];
+  let banana = this;
 
-  return () => {
+  return function alice() {
     args = args.concat(Array.from(arguments));
 
     if(args.length === numArgs){
-      return this.apply(this, args);
+      return banana.apply(banana, args);
     }
+    return alice;
   }
 };
 
 Function.prototype.restfulCurry = function (numArgs) {
   let args = [];
+  let that = this;
 
-  return () => {
+  const alice = function(){
     args = args.concat(Array.from(arguments));
 
     if (args.length === numArgs) {
-      return this.apply(this, args);
+      return that.apply(that, args);
     }
-  }
+    return alice;
+  };
+  return alice;
 };
+
+
+function printer(...args){
+  args.forEach(el => {
+    console.log(el);
+  })
+}
